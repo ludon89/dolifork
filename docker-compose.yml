@@ -13,10 +13,10 @@ services:
       - "3306:3306"
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: dolifork19
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: dolibarr/dolibarr:19.0.4-php8.2
     container_name: doli
     environment:
       DOLI_DB_HOST: ${DOLI_DB_HOST:-mariadb}
@@ -24,13 +24,13 @@ services:
       DOLI_DB_USER: ${DOLI_DB_USER:-dolidbuser}
       DOLI_DB_PASSWORD: ${DOLI_DB_PASSWORD:-dolidbpass}
       DOLI_URL_ROOT: "${DOLI_URL_ROOT:-http://localhost}"
-      # DOLI_ADMIN_LOGIN: "${DOLI_ADMIN_LOGIN:-admin}"
-      # DOLI_ADMIN_PASSWORD: "${DOLI_ADMIN_PASSWORD:-admin}"
-      # DOLI_INSTALL_AUTO: ${DOLI_INSTALL_AUTO:-1}
-      # DOLI_PROD: ${DOLI_PROD:-1}
-      # DOLI_INIT_DEMO: ${DOLI_INIT_DEMO:-0}
-      # DOLI_CRON: ${DOLI_CRON:-0}
-      # DOLI_COMPANY_NAME: ${DOLI_COMPANY_NAME:-MyBigCompany}
+      DOLI_ADMIN_LOGIN: "${DOLI_ADMIN_LOGIN:-admin}"
+      DOLI_ADMIN_PASSWORD: "${DOLI_ADMIN_PASSWORD:-admin}"
+      DOLI_INSTALL_AUTO: ${DOLI_INSTALL_AUTO:-1}
+      DOLI_PROD: ${DOLI_PROD:-1}
+      DOLI_INIT_DEMO: ${DOLI_INIT_DEMO:-0}
+      DOLI_CRON: ${DOLI_CRON:-0}
+      DOLI_COMPANY_NAME: ${DOLI_COMPANY_NAME:-MyBigCompany}
     ports:
       - "80:80"
     depends_on:
