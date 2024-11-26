@@ -261,10 +261,6 @@ function initializeDatabase() {
 	# Insert may fails if record already exists
 	mysql -u ${DOLI_DB_USER} -p${DOLI_DB_PASSWORD} -h ${DOLI_DB_HOST} -P ${DOLI_DB_HOST_PORT} ${DOLI_DB_NAME} -e "UPDATE llx_user SET pass_crypted = '${pass_crypted}' WHERE login = '${DOLI_ADMIN_LOGIN}';" >>/var/www/documents/initdb.log 2>&1
 
-	echo "Enable user module ..."
-	echo "Enable user module ..." >>/var/www/documents/initdb.log
-	php /var/www/scripts/docker-init.php
-
 	# Run init scripts
 	echo "Run scripts into docker-init.d if there is ..."
 	echo "Run scripts into docker-init.d if there is ..." >>/var/www/documents/initdb.log

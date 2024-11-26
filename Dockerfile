@@ -30,6 +30,11 @@ ENV PHP_INI_UPLOAD_MAX_FILESIZE=20M
 ENV PHP_INI_POST_MAX_SIZE=22M
 ENV PHP_INI_ALLOW_URL_FOPEN=0
 
+VOLUME /var/www/documents
+VOLUME /var/www/html
+
+EXPOSE 80
+
 RUN sed -i \
   -e 's/^\(ServerSignature On\)$/#\1/g' \
   -e 's/^#\(ServerSignature Off\)$/\1/g' \
@@ -62,7 +67,6 @@ RUN apt-get update -y \
   && docker-php-ext-install -j$(nproc) ldap \
   && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
   && docker-php-ext-install imap \
-  # Install and configure XDebug
   && pecl install xdebug-3.3.2 \
   && docker-php-ext-enable xdebug \
   && echo "xdebug.mode=debug,develop" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -71,10 +75,10 @@ RUN apt-get update -y \
   && mv ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini \
   && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 80
+COPY docker-run.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-run.sh && \
+  ln -s /var/www/html /var/www/htdocs
 
-VOLUME /var/www/documents
-VOLUME /var/www/html
+ENTRYPOINT ["docker-run.sh"]
 
-# Run the default Apache server command
 CMD ["apache2-foreground"]
