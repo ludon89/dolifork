@@ -36,7 +36,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - mariadb
+      - db
     volumes:
       - ./documents:/var/www/documents
       - ./htdocs:/var/www/html/
