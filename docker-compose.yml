@@ -31,8 +31,8 @@ services:
       DOLI_INIT_DEMO: ${DOLI_INIT_DEMO:-0}
       DOLI_CRON: ${DOLI_CRON:-0}
       DOLI_COMPANY_NAME: ${DOLI_COMPANY_NAME:-MyBigCompany}
-      WWW_USER_ID: {WWW_USER_ID:-1000}
-      WWW_GROUP_ID: {WWW_GROUP_ID:-1000}
+      WWW_USER_ID: ${WWW_USER_ID:-1000}
+      WWW_GROUP_ID: ${WWW_GROUP_ID:-1000}
     ports:
       - "80:80"
     depends_on:
