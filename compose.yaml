@@ -6,10 +6,10 @@ services:
     image: mariadb:latest
     container_name: mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD
-      - MYSQL_DATABASE
-      - MYSQL_USER
-      - MYSQL_PASSWORD
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-dolifork19}
+      - MYSQL_USER=${MYSQL_USER:-dolidbuser}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-dolidbpass}
     volumes:
       - ./db_data:/var/lib/mysql
     networks:
@@ -23,21 +23,21 @@ services:
       dockerfile: Dockerfile
     container_name: doli
     environment:
-      - DOLI_DB_HOST
-      - DOLI_DB_HOST_PORT
-      - DOLI_DB_NAME
-      - DOLI_DB_USER
-      - DOLI_DB_PASSWORD
-      - DOLI_URL_ROOT
-      - DOLI_ADMIN_LOGIN
-      - DOLI_ADMIN_PASSWORD
-      - DOLI_INSTALL_AUTO
-      - DOLI_PROD
-      - DOLI_INIT_DEMO
-      - DOLI_CRON
-      - DOLI_COMPANY_NAME
-      - WWW_USER_ID
-      - WWW_GROUP_ID
+      - DOLI_DB_HOST=${DOLI_DB_HOST:-mariadb}
+      - DOLI_DB_HOST_PORT=${DOLI_DB_HOST_PORT:-3306}
+      - DOLI_DB_NAME=${DOLI_DB_NAME:-dolifork19}
+      - DOLI_DB_USER=${DOLI_DB_USER:-dolidbuser}
+      - DOLI_DB_PASSWORD=${DOLI_DB_PASSWORD:-dolidbpassword}
+      - DOLI_URL_ROOT="${DOLI_URL_ROOT:-http://localhost}
+      - DOLI_ADMIN_LOGIN="${DOLI_ADMIN_LOGIN:-admin}"
+      - DOLI_ADMIN_PASSWORD="${DOLI_ADMIN_PASSWORD:-admin}"
+      - DOLI_INSTALL_AUTO={DOLI_INSTALL_AUTO:-1}
+      - DOLI_PROD={DOLI_PROD:-0}
+      - DOLI_INIT_DEMO={DOLI_INIT_DEMO:-0}
+      - DOLI_CRON={DOLI_CRON:-0}
+      - DOLI_COMPANY_NAME="${DOLI_COMPANY_NAME:-MyBigCompany}"
+      - WWW_USER_ID=${WWW_USER_ID:-1000}
+      - WWW_GROUP_ID=${WWW_GROUP_ID:-1000}
     networks:
       - default
     ports:
