@@ -35,15 +35,19 @@ VOLUME /var/www/html
 
 EXPOSE 80
 
+COPY docker-run.sh /usr/local/bin/
+
 RUN sed -i \
   -e 's/^\(ServerSignature On\)$/#\1/g' \
   -e 's/^#\(ServerSignature Off\)$/\1/g' \
   -e 's/^\(ServerTokens\) OS$/\1 Prod/g' \
-  /etc/apache2/conf-available/security.conf
+  /etc/apache2/conf-available/security.conf && \
+  chmod +x /usr/local/bin/docker-run.sh && \
+  ln -s /var/www/html /var/www/htdocs
 
-RUN apt-get update -y \
-  && apt-get dist-upgrade -y \
-  && apt-get install -y --no-install-recommends \
+RUN apt-get update -y && \
+  apt-get dist-upgrade -y && \
+  apt-get install -y --no-install-recommends \
     libc-client-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
@@ -57,27 +61,24 @@ RUN apt-get update -y \
     default-mysql-client \
     postgresql-client \
     vim-tiny \
-    cron \
-  && apt-get autoremove -y \
-  && docker-php-ext-configure gd --with-freetype --with-jpeg \
-  && docker-php-ext-install -j$(nproc) calendar intl mysqli pdo_mysql gd soap zip opcache \
-  && docker-php-ext-configure pgsql -with-pgsql \
-  && docker-php-ext-install pdo_pgsql pgsql \
-  && docker-php-ext-configure ldap --with-libdir=lib/$(gcc -dumpmachine)/ \
-  && docker-php-ext-install -j$(nproc) ldap \
-  && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-  && docker-php-ext-install imap \
-  && pecl install xdebug-3.3.2 \
-  && docker-php-ext-enable xdebug \
-  && echo "xdebug.mode=debug,develop" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && mv ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini \
-  && rm -rf /var/lib/apt/lists/*
+    cron && \
+  apt-get autoremove -y && \
+  docker-php-ext-configure gd --with-freetype --with-jpeg && \
+  docker-php-ext-install -j$(nproc) calendar intl mysqli pdo_mysql gd soap zip opcache && \
+  docker-php-ext-configure pgsql -with-pgsql && \
+  docker-php-ext-install pdo_pgsql pgsql && \
+  docker-php-ext-configure ldap --with-libdir=lib/$(gcc -dumpmachine)/ && \
+  docker-php-ext-install -j$(nproc) ldap && \
+  docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
+  docker-php-ext-install imap && \
+  mv ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini && \
+  rm -rf /var/lib/apt/lists/*
 
-COPY docker-run.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-run.sh && \
-  ln -s /var/www/html /var/www/htdocs
+RUN pecl install xdebug-3.3.2 && \
+  docker-php-ext-enable xdebug && \
+  echo "xdebug.mode=debug,develop" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+  echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+  echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 ENTRYPOINT ["docker-run.sh"]
 
