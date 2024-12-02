@@ -1,6 +1,7 @@
 services:
   doli:
+    container_name: dolidev
     environment:
-      - DOLI_COMPANY_NAME=caca
+      - DOLI_COMPANY_NAME=test
     extra_hosts:
       - host.docker.internal:host-gateway

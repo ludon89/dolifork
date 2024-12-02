@@ -28,14 +28,14 @@ services:
       - DOLI_DB_NAME=${DOLI_DB_NAME:-dolifork19}
       - DOLI_DB_USER=${DOLI_DB_USER:-dolidbuser}
       - DOLI_DB_PASSWORD=${DOLI_DB_PASSWORD:-dolidbpassword}
-      - DOLI_URL_ROOT="${DOLI_URL_ROOT:-http://localhost}
-      - DOLI_ADMIN_LOGIN="${DOLI_ADMIN_LOGIN:-admin}"
-      - DOLI_ADMIN_PASSWORD="${DOLI_ADMIN_PASSWORD:-admin}"
+      - DOLI_URL_ROOT=${DOLI_URL_ROOT:-http://localhost}
+      - DOLI_ADMIN_LOGIN=${DOLI_ADMIN_LOGIN:-admin}
+      - DOLI_ADMIN_PASSWORD=${DOLI_ADMIN_PASSWORD:-admin}
       - DOLI_INSTALL_AUTO={DOLI_INSTALL_AUTO:-1}
       - DOLI_PROD={DOLI_PROD:-0}
       - DOLI_INIT_DEMO={DOLI_INIT_DEMO:-0}
       - DOLI_CRON={DOLI_CRON:-0}
-      - DOLI_COMPANY_NAME="${DOLI_COMPANY_NAME:-MyBigCompany}"
+      - DOLI_COMPANY_NAME=${DOLI_COMPANY_NAME:-MyBigCompany}
       - WWW_USER_ID=${WWW_USER_ID:-1000}
       - WWW_GROUP_ID=${WWW_GROUP_ID:-1000}
     networks:
