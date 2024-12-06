@@ -4,7 +4,7 @@ networks:
 services:
   mariadb:
     image: mariadb:latest
-    container_name: mariadb
+    container_name: dolifork19-db
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
       - MYSQL_DATABASE=${MYSQL_DATABASE:-dolifork19}
@@ -17,17 +17,17 @@ services:
     ports:
       - "3306:3306"
 
-  doli:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: doli
+    container_name: dolifork19-web
     environment:
       - DOLI_DB_HOST=${DOLI_DB_HOST:-mariadb}
       - DOLI_DB_HOST_PORT=${DOLI_DB_HOST_PORT:-3306}
       - DOLI_DB_NAME=${DOLI_DB_NAME:-dolifork19}
       - DOLI_DB_USER=${DOLI_DB_USER:-dolidbuser}
-      - DOLI_DB_PASSWORD=${DOLI_DB_PASSWORD:-dolidbpassword}
+      - DOLI_DB_PASSWORD=${DOLI_DB_PASSWORD:-dolidbpass}
       - DOLI_URL_ROOT=${DOLI_URL_ROOT:-http://localhost}
       - DOLI_ADMIN_LOGIN=${DOLI_ADMIN_LOGIN:-admin}
       - DOLI_ADMIN_PASSWORD=${DOLI_ADMIN_PASSWORD:-admin}
@@ -47,3 +47,5 @@ services:
     volumes:
       - ./documents:/var/www/documents
       - ./htdocs:/var/www/html/
+    extra_hosts:
+      - host.docker.internal:host-gateway
